@@ -51,6 +51,16 @@ const linksList = [
     icone: 'school'
   },
   {
+    titulo: 'Professores',
+    to: '/app/professores',
+    icone: 'person'
+  },
+  {
+    titulo: 'Disciplinas',
+    to: '/app/disciplinas',
+    icone: 'menu_book'
+  },
+  {
     titulo: 'Sair',
     to: '/',
     icone: 'logout'

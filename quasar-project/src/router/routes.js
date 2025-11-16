@@ -15,6 +15,14 @@ const routes = [
       {
         path: 'alunos',
         component: () => import('pages/CadastroAlunoPage.vue')
+      },
+      {
+        path: 'professores',
+        component: () => import('pages/CadastroProfessorPage.vue')
+      },
+      {
+        path: 'disciplinas',
+        component: () => import('pages/CadastroDisciplinaPage.vue')
       }
     ]
   },

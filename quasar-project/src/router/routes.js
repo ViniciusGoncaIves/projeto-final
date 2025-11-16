@@ -23,6 +23,14 @@ const routes = [
       {
         path: 'disciplinas',
         component: () => import('pages/CadastroDisciplinaPage.vue')
+      },
+      {
+        path: 'turmas',
+        component: () => import('pages/CadastroTurmaPage.vue')
+      },
+      {
+        path: 'notas',
+        component: () => import('pages/CadastroNotaPage.vue')
       }
     ]
   },

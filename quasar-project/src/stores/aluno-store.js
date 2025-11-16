@@ -9,6 +9,19 @@ export const useAlunoStore = defineStore('aluno', {
     erro: null
   }),
 
+  getters: {
+    optionsParaSelect (state) {
+      return state.lista.map(a => ({
+        label: a.nome,
+        value: a.id
+      }))
+    },
+
+    buscarPorId: (state) => (id) => {
+      return state.lista.find(a => a.id === id) || null
+    }
+  },
+
   actions: {
     async carregarTodos () {
       try {
@@ -27,11 +40,10 @@ export const useAlunoStore = defineStore('aluno', {
       try {
         this.carregando = true
         this.erro = null
-        const novoAluno = await AlunoService.criar(payload)
-        this.lista.push(novoAluno)
-        return novoAluno
+        const novo = await AlunoService.criar(payload)
+        this.lista.push(novo)
+        return novo
       } catch (erro) {
-        console.error(erro)
         this.erro = erro?.message || 'Erro ao criar aluno'
         throw erro
       } finally {
@@ -43,14 +55,11 @@ export const useAlunoStore = defineStore('aluno', {
       try {
         this.carregando = true
         this.erro = null
-        const alunoAtualizado = await AlunoService.atualizar(id, payload)
-        const indice = this.lista.findIndex(a => a.id === id)
-        if (indice !== -1) {
-          this.lista[indice] = alunoAtualizado
-        }
-        return alunoAtualizado
+        const atualizado = await AlunoService.atualizar(id, payload)
+        const idx = this.lista.findIndex(a => a.id === id)
+        if (idx !== -1) this.lista[idx] = atualizado
+        return atualizado
       } catch (erro) {
-        console.error(erro)
         this.erro = erro?.message || 'Erro ao atualizar aluno'
         throw erro
       } finally {
@@ -65,7 +74,6 @@ export const useAlunoStore = defineStore('aluno', {
         await AlunoService.remover(id)
         this.lista = this.lista.filter(a => a.id !== id)
       } catch (erro) {
-        console.error(erro)
         this.erro = erro?.message || 'Erro ao remover aluno'
         throw erro
       } finally {

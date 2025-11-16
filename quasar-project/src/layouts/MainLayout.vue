@@ -61,6 +61,16 @@ const linksList = [
     icone: 'menu_book'
   },
   {
+    titulo: 'Turmas',
+    to: '/app/turmas',
+    icone: 'groups'
+  },
+  {
+    titulo: 'Notas',
+    to: '/app/notas',
+    icone: 'grading'
+  },
+  {
     titulo: 'Sair',
     to: '/',
     icone: 'logout'

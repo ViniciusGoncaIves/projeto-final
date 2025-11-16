@@ -1,15 +1,15 @@
 {
   "alunos": [
     {
-      "id": 1,
-      "nome": "Ana Lima",
+      "nome": "Gerson",
       "cpf": "11111111111",
       "data_nascimento": "2007-02-15",
-      "email": "ana.lima@exemplo.com",
-      "telefone": "11988887777"
+      "email": "Gersinho@exemplo.com",
+      "telefone": "11988887777",
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "nome": "Bruno Souza",
       "cpf": "22222222222",
       "data_nascimento": "2006-09-30",
@@ -17,93 +17,103 @@
       "telefone": "11977776666"
     },
     {
-      "id": 3,
-      "nome": "Carolina Ribeiro",
-      "cpf": "33333333333",
-      "data_nascimento": "2007-12-01",
-      "email": "carol.ribeiro@exemplo.com",
-      "telefone": null
+      "id": "8440",
+      "nome": "Robinho",
+      "cpf": "21351351312",
+      "data_nascimento": "20/07/2001",
+      "email": "seila@gmail.com",
+      "telefone": ""
+    },
+    {
+      "nome": "Robson Leite",
+      "cpf": "78925836942",
+      "data_nascimento": "14/06/1993",
+      "email": "leitinho@email.com",
+      "telefone": "123456789",
+      "id": "4f5b"
     }
   ],
-
   "professores": [
     {
-      "id": 1,
+      "id": "1",
       "nome": "Thais Carla",
       "cpf": "44444444444",
       "email": "carla.gorda@gmail.com",
       "telefone": "11999990000"
     },
     {
-      "id": 2,
+      "id": "2",
       "nome": "Ricardo Hendges",
       "cpf": "55555555555",
       "email": "ricardo.melhor.professor@thebest.com",
       "telefone": "11988880000"
     }
   ],
-
   "disciplinas": [
     {
-      "id": 1,
+      "id": "1",
       "nome": "Linguagem de programação visual",
       "carga_horaria": 72,
       "descricao": "Front End com Quasar Framework.",
       "professor_id": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "nome": "Orientação a objetos",
       "carga_horaria": 72,
       "descricao": "Conceitos e práticas de programação orientada a objetos.",
       "professor_id": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "nome": "Introdução à Programação",
       "carga_horaria": 80,
       "descricao": "Lógica e algoritmos com foco em iniciantes.",
       "professor_id": 1
     }
   ],
-
   "turmas": [
     {
-      "id": 1,
+      "id": "1",
       "nome": "SIS 183",
-      "disciplina_id": [1, 2]
+      "disciplina_id": [
+        1,
+        2
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "nome": "SIS 181",
-      "disciplina_id": [1, 3]
+      "disciplina_id": [
+        1,
+        3
+      ]
     }
   ],
-
   "notas": [
     {
-      "id": 1,
+      "id": "1",
       "aluno_id": 1,
       "disciplina_id": 1,
       "nota": 8.5,
       "data_avaliacao": "2024-03-10"
     },
     {
-      "id": 2,
+      "id": "2",
       "aluno_id": 1,
       "disciplina_id": 2,
       "nota": 7.25,
       "data_avaliacao": "2024-04-05"
     },
     {
-      "id": 3,
+      "id": "3",
       "aluno_id": 2,
       "disciplina_id": 1,
-      "nota": 9.0,
+      "nota": 9,
       "data_avaliacao": "2024-03-12"
     },
     {
-      "id": 4,
+      "id": "4",
       "aluno_id": 3,
       "disciplina_id": 3,
       "nota": 6.75,

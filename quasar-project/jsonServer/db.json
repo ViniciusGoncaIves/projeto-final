@@ -31,6 +31,14 @@
       "email": "leitinho@email.com",
       "telefone": "123456789",
       "id": "4f5b"
+    },
+    {
+      "id": "cdc1",
+      "nome": "Matheus \"Gostosão\" Gonçalves",
+      "cpf": "086419749",
+      "data_nascimento": "22/05/1993",
+      "email": "matheusinlaze@hotmail.com",
+      "telefone": "foda-se"
     }
   ],
   "professores": [
@@ -47,6 +55,13 @@
       "cpf": "55555555555",
       "email": "ricardo.melhor.professor@thebest.com",
       "telefone": "11988880000"
+    },
+    {
+      "nome": "Jorge Roberto Trento",
+      "cpf": "12385247964",
+      "email": "trento@gmail.com",
+      "telefone": "456198894",
+      "id": "f23b"
     }
   ],
   "disciplinas": [
@@ -55,21 +70,28 @@
       "nome": "Linguagem de programação visual",
       "carga_horaria": 72,
       "descricao": "Front End com Quasar Framework.",
-      "professor_id": 1
+      "professor_nome": "Teste"
     },
     {
       "id": "2",
       "nome": "Orientação a objetos",
       "carga_horaria": 72,
       "descricao": "Conceitos e práticas de programação orientada a objetos.",
-      "professor_id": 2
+      "professor_nome": "teste2"
     },
     {
-      "id": "3",
       "nome": "Introdução à Programação",
       "carga_horaria": 80,
       "descricao": "Lógica e algoritmos com foco em iniciantes.",
-      "professor_id": 1
+      "professor_nome": "Ricardo",
+      "id": "3"
+    },
+    {
+      "nome": "Análise e projeto de sistemas",
+      "carga_horaria": "72",
+      "descricao": "Análise",
+      "professor_nome": "dfaaaaafsadddddddddddddddddddddddddd",
+      "id": "5bcf"
     }
   ],
   "turmas": [

@@ -12,6 +12,12 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
+    htmlVariables: {
+      productName: 'Sistema de Ensino',
+      productDescription: 'Sistema de gestão escolar'
+      // se quiser pode usar outro nome e mudar o index.html
+      // title: 'Sistema de Ensino'
+    },
     boot: ['i18n', 'axios'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css

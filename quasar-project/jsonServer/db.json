@@ -47,6 +47,14 @@
       "data_nascimento": "11/11/2025",
       "email": "seila@.com.br",
       "telefone": "(49) 9 8825-2685"
+    },
+    {
+      "id": "94dc",
+      "nome": "Teobaldo",
+      "cpf": "562.356.261-54",
+      "data_nascimento": "12/08/1983",
+      "email": "",
+      "telefone": "(56) 4 6456-4565"
     }
   ],
   "professores": [
@@ -114,6 +122,13 @@
       "carga_horaria": 60,
       "descricao": "",
       "professor_nome": "Juliano Eichelberger"
+    },
+    {
+      "id": "265e",
+      "nome": "Linguagem de Programação III",
+      "carga_horaria": 72,
+      "descricao": "",
+      "professor_nome": "Ricardo Hendges"
     }
   ],
   "turmas": [
@@ -157,7 +172,8 @@
         "4f5b",
         "8440",
         "2",
-        "1"
+        "1",
+        "94dc"
       ],
       "id": "1606"
     }
@@ -225,6 +241,20 @@
       "disciplina_nome": "2",
       "nota": 10,
       "data_avaliacao": "2025-11-18"
+    },
+    {
+      "aluno_nome": "94dc",
+      "disciplina_nome": "458e",
+      "nota": 8.25,
+      "data_avaliacao": "2025-11-03",
+      "id": "c85b"
+    },
+    {
+      "id": "7126",
+      "aluno_nome": "1",
+      "disciplina_nome": "265e",
+      "nota": 5.5,
+      "data_avaliacao": "2025-11-07"
     }
   ]
 }

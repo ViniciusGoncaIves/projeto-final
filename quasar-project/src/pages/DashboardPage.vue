@@ -1,9 +1,7 @@
-<!-- src/pages/DashboardPage.vue -->
 <template>
   <q-page class="dashboard-page q-pa-md">
     <div class="dashboard-wrapper q-gutter-md">
 
-      <!-- TÍTULO -->
       <div class="row items-center justify-between q-mb-sm">
         <div class="text-h5">
           Dashboard
@@ -13,7 +11,6 @@
         </q-badge>
       </div>
 
-      <!-- CARDS DE RESUMO -->
       <div class="row q-col-gutter-md">
         <div class="col-12 col-sm-6 col-md-3">
           <q-card class="dashboard-card summary-card">
@@ -56,9 +53,7 @@
         </div>
       </div>
 
-      <!-- LINHA: MÉDIA GERAL + MINI ESTATÍSTICAS -->
       <div class="row q-col-gutter-md q-mt-sm">
-        <!-- Média geral das notas -->
         <div class="col-12 col-md-4">
           <q-card class="dashboard-card highlight-card q-pa-md">
             <div class="text-caption text-grey-5">Média geral das notas</div>
@@ -81,7 +76,6 @@
           </q-card>
         </div>
 
-        <!-- Mini estatísticas -->
         <div class="col-12 col-md-8">
           <q-card class="dashboard-card soft-card q-pa-md">
             <div class="row q-col-gutter-md">
@@ -119,7 +113,6 @@
         </div>
       </div>
 
-      <!-- “GRÁFICO” 1: MÉDIA POR DISCIPLINA (q-linear-progress) -->
       <div class="row q-col-gutter-md q-mt-md">
         <div class="col-12 col-md-6">
           <q-card class="dashboard-card q-pa-md">
@@ -164,7 +157,6 @@
           </q-card>
         </div>
 
-        <!-- “GRÁFICO” 2: ALUNOS POR TURMA (q-linear-progress) -->
         <div class="col-12 col-md-6">
           <q-card class="dashboard-card q-pa-md">
             <div class="row items-center justify-between q-mb-sm">
@@ -212,7 +204,6 @@
         </div>
       </div>
 
-      <!-- TABELA DE ÚLTIMAS NOTAS -->
       <q-card class="dashboard-card q-mt-md q-pa-md">
         <div class="row items-center justify-between q-mb-sm">
           <div class="text-subtitle2">
@@ -267,13 +258,11 @@ onMounted(async () => {
   ])
 })
 
-/* Totais simples */
 const totalAlunos = computed(() => alunoStore.lista.length)
 const totalProfessores = computed(() => professorStore.lista.length)
 const totalDisciplinas = computed(() => disciplinaStore.lista.length)
 const totalTurmas = computed(() => turmaStore.lista.length)
 
-/* Estatísticas de notas */
 const quantidadeNotas = computed(() => notaStore.lista.length)
 
 const mediaGeralNotas = computed(() => {
@@ -297,12 +286,21 @@ const menorNota = computed(() => {
   return Math.min(...valores).toFixed(2)
 })
 
-/* “Gráfico” 1: média por disciplina (para q-linear-progress) */
+function obterNomeAluno (id) {
+  const aluno = alunoStore.lista.find(a => String(a.id) === String(id))
+  return aluno?.nome || id
+}
+
+function obterNomeDisciplina (id) {
+  const disc = disciplinaStore.lista.find(d => String(d.id) === String(id))
+  return disc?.nome || id
+}
+
 const mediasPorDisciplina = computed(() => {
   if (!notaStore.lista.length || !disciplinaStore.lista.length) return []
 
   const mapa = new Map()
-  // nota.disciplina_nome está guardando o ID da disciplina (pelo que você fez antes)
+
   notaStore.lista.forEach(nota => {
     const idDisciplina = String(nota.disciplina_nome)
     const atual = mapa.get(idDisciplina) || { soma: 0, qtd: 0 }
@@ -330,7 +328,6 @@ const quantidadeDisciplinasAvaliadas = computed(
   () => mediasPorDisciplina.value.length
 )
 
-/* “Gráfico” 2: alunos por turma (para q-linear-progress) */
 const alunosPorTurma = computed(() => {
   if (!turmaStore.lista.length) return []
 
@@ -354,11 +351,20 @@ const alunosPorTurma = computed(() => {
   })
 })
 
-/* Tabela: últimas notas */
 const colunasNotas = [
   { name: 'id', label: 'ID', field: 'id', align: 'left' },
-  { name: 'aluno_nome', label: 'Aluno', field: 'aluno_nome', align: 'left' },
-  { name: 'disciplina_nome', label: 'Disciplina', field: 'disciplina_nome', align: 'left' },
+  {
+    name: 'aluno_nome',
+    label: 'Aluno',
+    field: row => obterNomeAluno(row.aluno_nome),
+    align: 'left'
+  },
+  {
+    name: 'disciplina_nome',
+    label: 'Disciplina',
+    field: row => obterNomeDisciplina(row.disciplina_nome),
+    align: 'left'
+  },
   { name: 'nota', label: 'Nota', field: 'nota', align: 'center' },
   { name: 'data_avaliacao', label: 'Data', field: 'data_avaliacao', align: 'center' }
 ]

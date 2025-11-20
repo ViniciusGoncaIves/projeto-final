@@ -1,9 +1,42 @@
-<!-- src/pages/CadastroAlunoPage.vue -->
 <template>
   <q-page class="q-pa-md">
     <q-card flat bordered class="q-pa-md">
-      <div class="text-h6 q-mb-md">
-        Cadastro de Alunos
+
+      <div class="row items-center justify-between q-mb-md">
+        <div class="text-h6">
+          Cadastro de Alunos
+        </div>
+
+        <div class="row items-center q-gutter-sm">
+          <q-input
+            dense
+            outlined
+            v-model="filtro"
+            placeholder="Pesquisar alunos..."
+            debounce="300"
+            class="q-mr-sm"
+            style="min-width: 260px"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <q-btn
+            label="Recarregar"
+            icon="refresh"
+            color="primary"
+            @click="carregarDados"
+            :loading="alunoStore.carregando || turmaStore.carregando"
+          />
+
+          <q-btn
+            label="Novo aluno"
+            icon="add"
+            color="positive"
+            @click="novoAluno"
+          />
+        </div>
       </div>
 
       <q-banner
@@ -17,26 +50,9 @@
         {{ alunoStore.erro }}
       </q-banner>
 
-      <div class="row items-center q-gutter-sm q-mb-md">
-        <q-btn
-          label="Recarregar"
-          icon="refresh"
-          color="primary"
-          @click="carregarDados"
-          :loading="alunoStore.carregando || turmaStore.carregando"
-        />
-
-        <q-btn
-          label="Novo aluno"
-          icon="add"
-          color="positive"
-          @click="novoAluno"
-        />
-      </div>
-
       <q-table
         title="Lista de alunos"
-        :rows="alunoStore.lista"
+        :rows="linhasFiltradas"
         :columns="colunas"
         row-key="id"
         flat
@@ -75,36 +91,65 @@
         </q-card-section>
 
         <q-card-section class="q-gutter-md">
+
           <q-input
             v-model="alunoEmEdicao.nome"
             label="Nome"
             dense
             outlined
           />
+
           <q-input
             v-model="alunoEmEdicao.cpf"
             label="CPF"
             dense
             outlined
+            mask="###.###.###-##"
+            fill-mask
+            hint="Formato: 000.000.000-00"
           />
+
           <q-input
             v-model="alunoEmEdicao.data_nascimento"
             label="Data de nascimento"
             dense
             outlined
-            hint="Formato livre (ex: 2007-02-15 ou 20/07/2001)"
-          />
+            mask="##/##/####"
+            fill-mask
+          >
+            <template #append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date
+                    v-model="alunoEmEdicao.data_nascimento"
+                    mask="DD/MM/YYYY"
+                    minimal
+                  >
+                    <div class="row items-center justify-end q-pa-sm">
+                      <q-btn flat label="Fechar" color="primary" v-close-popup />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
           <q-input
             v-model="alunoEmEdicao.email"
             label="E-mail"
+            type="email"
             dense
             outlined
           />
+
           <q-input
             v-model="alunoEmEdicao.telefone"
             label="Telefone"
             dense
             outlined
+            mask="(##) # ####-####"
+            fill-mask
+            hint="Formato: (49) 9 9999-9999"
           />
 
           <q-select
@@ -157,6 +202,23 @@ const colunas = [
   { name: 'acoes', label: 'Ações', field: 'acoes', align: 'center' }
 ]
 
+const filtro = ref('')
+
+const linhasFiltradas = computed(() => {
+  const texto = filtro.value.trim().toLowerCase()
+  if (!texto) return alunoStore.lista
+
+  return alunoStore.lista.filter(a => {
+    return (
+      String(a.id || '').toLowerCase().includes(texto) ||
+      String(a.nome || '').toLowerCase().includes(texto) ||
+      String(a.cpf || '').toLowerCase().includes(texto) ||
+      String(a.email || '').toLowerCase().includes(texto) ||
+      String(a.telefone || '').toLowerCase().includes(texto)
+    )
+  })
+})
+
 const dialogoVisivel = ref(false)
 const modoEdicao = ref(false)
 
@@ -169,10 +231,8 @@ const alunoEmEdicao = reactive({
   telefone: ''
 })
 
-// turma selecionada no form (id da turma)
 const turmaSelecionadaId = ref(null)
 
-// opções de turma para o combo
 const opcoesTurma = computed(() =>
   turmaStore.lista.map(t => ({
     label: t.nome,
@@ -213,7 +273,6 @@ const editarAluno = (aluno) => {
   alunoEmEdicao.telefone = aluno.telefone
 
   turmaSelecionadaId.value = null
-
   dialogoVisivel.value = true
 }
 
@@ -235,11 +294,12 @@ const salvarAluno = async () => {
       alunoSalvo = await alunoStore.criarAluno(payload)
     }
 
-    // se tiver turma selecionada, vincula o aluno à turma
     if (turmaSelecionadaId.value) {
-      const turma = turmaStore.lista.find(t => t.id === turmaSelecionadaId.value)
+      const turma = turmaStore.lista.find(
+        t => String(t.id) === String(turmaSelecionadaId.value)
+      )
+
       if (turma) {
-        // normaliza IDs pra string pra não dar pau em includes
         const alunosIds = Array.isArray(turma.alunos_ids)
           ? turma.alunos_ids.map(id => String(id))
           : []

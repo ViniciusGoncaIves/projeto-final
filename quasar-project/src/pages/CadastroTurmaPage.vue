@@ -1,13 +1,44 @@
-<!-- src/pages/CadastroTurmaPage.vue -->
 <template>
   <q-page class="q-pa-md">
-
     <q-card flat bordered class="q-pa-md">
-      <div class="text-h6 q-mb-md">
-        Cadastro de Turmas
+
+      <div class="row items-center justify-between q-mb-md">
+        <div class="text-h6">
+          Cadastro de Turmas
+        </div>
+
+        <div class="row q-gutter-sm items-center">
+          <q-input
+            v-model="filtro"
+            dense
+            outlined
+            debounce="300"
+            placeholder="Pesquisar turmas..."
+            class="q-mr-sm"
+            clearable
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <q-btn
+            label="Recarregar"
+            icon="refresh"
+            color="primary"
+            @click="carregarDados"
+            :loading="turmaStore.carregando || alunoStore.carregando"
+          />
+
+          <q-btn
+            label="Nova turma"
+            icon="add"
+            color="positive"
+            @click="novaTurma"
+          />
+        </div>
       </div>
 
-      <!-- Erro -->
       <q-banner
         v-if="turmaStore.erro"
         class="q-mb-md"
@@ -19,28 +50,9 @@
         {{ turmaStore.erro }}
       </q-banner>
 
-      <!-- Ações -->
-      <div class="row items-center q-gutter-sm q-mb-md">
-        <q-btn
-          label="Recarregar"
-          icon="refresh"
-          color="primary"
-          @click="carregarDados"
-          :loading="turmaStore.carregando || alunoStore.carregando"
-        />
-
-        <q-btn
-          label="Nova turma"
-          icon="add"
-          color="positive"
-          @click="novaTurma"
-        />
-      </div>
-
-      <!-- Tabela de turmas -->
       <q-table
         title="Lista de turmas"
-        :rows="turmaStore.lista"
+        :rows="linhasFiltradas"
         :columns="colunas"
         row-key="id"
         flat
@@ -56,7 +68,6 @@
 
         <template #body-cell-acoes="props">
           <q-td :props="props">
-            <!-- Ver (master-detail em popup) -->
             <q-btn
               flat
               dense
@@ -65,7 +76,6 @@
               color="primary"
               @click="abrirDetalheTurma(props.row)"
             />
-            <!-- Editar turma -->
             <q-btn
               flat
               dense
@@ -75,7 +85,6 @@
               class="q-ml-xs"
               @click="editarTurma(props.row)"
             />
-            <!-- Excluir turma -->
             <q-btn
               flat
               dense
@@ -90,7 +99,6 @@
       </q-table>
     </q-card>
 
-    <!-- Dialog de nova/edição de turma -->
     <q-dialog v-model="dialogoEdicaoVisivel" persistent>
       <q-card style="min-width: 500px">
         <q-card-section class="text-h6">
@@ -137,7 +145,6 @@
       </q-card>
     </q-dialog>
 
-    <!-- Dialog de master-detail: detalhe da turma + alunos -->
     <q-dialog v-model="dialogoDetalheVisivel" persistent>
       <q-card style="min-width: 600px; max-width: 90vw;">
         <q-card-section class="row items-center justify-between">
@@ -212,6 +219,8 @@ import { useAlunoStore } from 'src/stores/aluno-store'
 const turmaStore = useTurmaStore()
 const alunoStore = useAlunoStore()
 
+const filtro = ref('')
+
 const colunas = [
   { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
   { name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
@@ -223,6 +232,14 @@ const colunas = [
   },
   { name: 'acoes', label: 'Ações', field: 'acoes', align: 'center' }
 ]
+
+const linhasFiltradas = computed(() => {
+  if (!filtro.value) return turmaStore.lista
+  const termo = filtro.value.toLowerCase()
+  return turmaStore.lista.filter(t =>
+    String(t.nome || '').toLowerCase().includes(termo)
+  )
+})
 
 const dialogoEdicaoVisivel = ref(false)
 const dialogoDetalheVisivel = ref(false)

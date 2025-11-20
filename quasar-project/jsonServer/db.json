@@ -2,35 +2,51 @@
   "alunos": [
     {
       "nome": "Gerson",
-      "cpf": "11111111111",
+      "cpf": "783.453.453-42",
       "data_nascimento": "2007-02-15",
       "email": "Gersinho@exemplo.com",
-      "telefone": "11988887777",
+      "telefone": "(45) 3 4534-5345",
       "id": "1"
     },
     {
-      "id": "2",
       "nome": "Bruno Souza",
-      "cpf": "22222222222",
+      "cpf": "456.754.675-46",
       "data_nascimento": "2006-09-30",
       "email": "bruno.souza@exemplo.com",
-      "telefone": "11977776666"
+      "telefone": "(45) 6 7546-7546",
+      "id": "2"
     },
     {
       "nome": "Robinho",
-      "cpf": "21351351312",
+      "cpf": "456.745.789-67",
       "data_nascimento": "20/07/2001",
       "email": "seila@gmail.com",
-      "telefone": "23523523423",
+      "telefone": "(45) 6 7456-8456",
       "id": "8440"
     },
     {
       "nome": "Robson Leite",
-      "cpf": "78925836942",
+      "cpf": "546.754.675-46",
       "data_nascimento": "14/06/1993",
       "email": "leitinho@email.com",
-      "telefone": "123456789",
+      "telefone": "(84) 5 6845-6845",
       "id": "4f5b"
+    },
+    {
+      "nome": "Arnildo",
+      "cpf": "456.312.564-36",
+      "data_nascimento": "25/08/1999",
+      "email": "",
+      "telefone": "(45) 6 1984-5649",
+      "id": "8356"
+    },
+    {
+      "id": "32e2",
+      "nome": "Jerundio",
+      "cpf": "654.198.456-13",
+      "data_nascimento": "11/11/2025",
+      "email": "seila@.com.br",
+      "telefone": "(49) 9 8825-2685"
     }
   ],
   "professores": [
@@ -54,71 +70,112 @@
       "email": "trento@gmail.com",
       "telefone": "456198894",
       "id": "f23b"
+    },
+    {
+      "id": "c387",
+      "nome": "Juliano Eichelberguer",
+      "cpf": "465.312.554-66",
+      "email": "juliano@gmail.com",
+      "telefone": "(49) 9 9165-1564"
     }
   ],
   "disciplinas": [
     {
-      "id": "1",
       "nome": "Linguagem de programação visual",
       "carga_horaria": 72,
       "descricao": "Front End com Quasar Framework.",
-      "professor_nome": "Teste"
+      "professor_nome": "Thais Carla",
+      "id": "1"
     },
     {
-      "id": "2",
-      "nome": "Orientação a objetos",
+      "nome": "Orientação Objetos",
       "carga_horaria": 72,
       "descricao": "Conceitos e práticas de programação orientada a objetos.",
-      "professor_nome": "teste2"
+      "professor_nome": "Jorge Roberto Trento",
+      "id": "2"
     },
     {
       "nome": "Introdução à Programação",
       "carga_horaria": 80,
       "descricao": "Lógica e algoritmos com foco em iniciantes.",
-      "professor_nome": "Ricardo",
+      "professor_nome": "Thais Carla",
       "id": "3"
     },
     {
       "nome": "Análise e projeto de sistemas",
       "carga_horaria": "72",
       "descricao": "Análise",
-      "professor_nome": "dfaaaaafsadddddddddddddddddddddddddd",
+      "professor_nome": "Jorge Roberto Trento",
       "id": "5bcf"
+    },
+    {
+      "id": "458e",
+      "nome": "Inteligência Artificial",
+      "carga_horaria": 60,
+      "descricao": "",
+      "professor_nome": "Juliano Eichelberger"
     }
   ],
   "turmas": [
     {
-      "id": "1",
       "nome": "SIS 183",
       "alunos_ids": [
         "1",
         "2",
         "4f5b",
-        "8440"
-      ]
+        "8440",
+        "8356"
+      ],
+      "id": "1"
     },
     {
-      "id": "2",
       "nome": "SIS 181",
       "alunos_ids": [
-        "8440"
-      ]
+        "8440",
+        "2cc5",
+        "1",
+        "32e2"
+      ],
+      "id": "2"
+    },
+    {
+      "nome": "ADM 190",
+      "alunos_ids": [
+        "2",
+        "4f5b",
+        "8440",
+        "8356",
+        "32e2"
+      ],
+      "id": "1dbe"
+    },
+    {
+      "nome": "SIS 180",
+      "alunos_ids": [
+        "32e2",
+        "8356",
+        "4f5b",
+        "8440",
+        "2",
+        "1"
+      ],
+      "id": "1606"
     }
   ],
   "notas": [
     {
-      "id": "1",
-      "aluno_nome": "1",
-      "disciplina_nome": "1",
+      "aluno_nome": "Roberto",
+      "disciplina_nome": "Linguagem de Programação Visual",
       "nota": 8.5,
-      "data_avaliacao": "2024-03-10"
+      "data_avaliacao": "2024-03-10",
+      "id": "1"
     },
     {
-      "id": "2",
       "aluno_nome": "1",
       "disciplina_nome": "2",
       "nota": 7.25,
-      "data_avaliacao": "2024-04-05"
+      "data_avaliacao": "2024-04-05",
+      "id": "2"
     },
     {
       "id": "3",
@@ -128,11 +185,46 @@
       "data_avaliacao": "2024-03-12"
     },
     {
-      "id": "4",
-      "aluno_nome": "3",
+      "aluno_nome": "4f5b",
+      "disciplina_nome": "5bcf",
+      "nota": 8,
+      "data_avaliacao": "2024-05-01",
+      "id": "4"
+    },
+    {
+      "aluno_nome": "Cládio",
+      "disciplina_nome": "Linguagem de Programação Visual",
+      "nota": 5,
+      "data_avaliacao": "2025-11-11",
+      "id": "fc99"
+    },
+    {
+      "id": "0097",
+      "aluno_nome": "8356",
       "disciplina_nome": "3",
-      "nota": 6.75,
-      "data_avaliacao": "2024-05-01"
+      "nota": 7.89,
+      "data_avaliacao": "2025-11-19"
+    },
+    {
+      "id": "ee79",
+      "aluno_nome": "32e2",
+      "disciplina_nome": "5bcf",
+      "nota": 0.75,
+      "data_avaliacao": "2025-11-11"
+    },
+    {
+      "id": "c63e",
+      "aluno_nome": "32e2",
+      "disciplina_nome": "458e",
+      "nota": 4.5,
+      "data_avaliacao": "2025-11-08"
+    },
+    {
+      "id": "7a3d",
+      "aluno_nome": "8356",
+      "disciplina_nome": "2",
+      "nota": 10,
+      "data_avaliacao": "2025-11-18"
     }
   ]
 }

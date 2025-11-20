@@ -1,9 +1,41 @@
 <template>
   <q-page class="q-pa-md">
-
     <q-card flat bordered class="q-pa-md">
-      <div class="text-h6 q-mb-md">
-        Cadastro de Disciplinas
+      <div class="row items-center justify-between q-mb-md">
+        <div class="text-h6">
+          Cadastro de Disciplinas
+        </div>
+
+        <div class="row items-center q-gutter-sm">
+          <q-input
+            v-model="filtro"
+            dense
+            outlined
+            debounce="300"
+            placeholder="Pesquisar disciplinas..."
+            class="q-mr-sm"
+            style="min-width: 260px"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <q-btn
+            label="Recarregar"
+            icon="refresh"
+            color="primary"
+            @click="carregarDados"
+            :loading="disciplinaStore.carregando || professorStore.carregando"
+          />
+
+          <q-btn
+            label="Nova disciplina"
+            icon="add"
+            color="positive"
+            @click="novaDisciplina"
+          />
+        </div>
       </div>
 
       <q-banner
@@ -17,26 +49,9 @@
         {{ disciplinaStore.erro }}
       </q-banner>
 
-      <div class="row items-center q-gutter-sm q-mb-md">
-        <q-btn
-          label="Recarregar"
-          icon="refresh"
-          color="primary"
-          @click="carregarDisciplinas"
-          :loading="disciplinaStore.carregando"
-        />
-
-        <q-btn
-          label="Nova disciplina"
-          icon="add"
-          color="positive"
-          @click="novaDisciplina"
-        />
-      </div>
-
       <q-table
         title="Lista de disciplinas"
-        :rows="disciplinaStore.lista"
+        :rows="linhasFiltradas"
         :columns="colunas"
         row-key="id"
         flat
@@ -81,6 +96,7 @@
             dense
             outlined
           />
+
           <q-input
             v-model.number="disciplinaEmEdicao.carga_horaria"
             label="Carga horária"
@@ -88,6 +104,7 @@
             dense
             outlined
           />
+
           <q-input
             v-model="disciplinaEmEdicao.descricao"
             label="Descrição"
@@ -96,13 +113,22 @@
             dense
             outlined
           />
-          <q-input
+
+          <q-select
             v-model="disciplinaEmEdicao.professor_nome"
-            label="Nome do professor"
+            :options="opcoesProfessor"
+            label="Professor"
             dense
             outlined
-            hint="Digite o nome exatamente como cadastrado em Professores"
-          />
+            emit-value
+            map-options
+            clearable
+            hint="Selecione um professor já cadastrado"
+          >
+            <template #prepend>
+              <q-icon name="person" />
+            </template>
+          </q-select>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -122,24 +148,50 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-
   </q-page>
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useDisciplinaStore } from 'src/stores/disciplina-store'
+import { useProfessorStore } from 'src/stores/professor-store'
 
 const disciplinaStore = useDisciplinaStore()
+const professorStore = useProfessorStore()
 
 const colunas = [
   { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
   { name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
-  { name: 'carga_horaria', label: 'Carga horária', field: 'carga_horaria', align: 'left' },
+  {
+    name: 'carga_horaria',
+    label: 'Carga horária',
+    field: 'carga_horaria',
+    align: 'center'
+  },
   { name: 'descricao', label: 'Descrição', field: 'descricao', align: 'left' },
-  { name: 'professor_nome', label: 'Professor', field: 'professor_nome', align: 'left' },
+  {
+    name: 'professor_nome',
+    label: 'Professor',
+    field: 'professor_nome',
+    align: 'left'
+  },
   { name: 'acoes', label: 'Ações', field: 'acoes', align: 'center' }
 ]
+
+const filtro = ref('')
+
+const linhasFiltradas = computed(() => {
+  const termo = filtro.value.trim().toLowerCase()
+  if (!termo) {
+    return disciplinaStore.lista
+  }
+
+  return disciplinaStore.lista.filter(d => {
+    const nome = (d.nome || '').toLowerCase()
+    const prof = (d.professor_nome || '').toLowerCase()
+    return nome.includes(termo) || prof.includes(termo)
+  })
+})
 
 const dialogoVisivel = ref(false)
 const modoEdicao = ref(false)
@@ -147,21 +199,31 @@ const modoEdicao = ref(false)
 const disciplinaEmEdicao = reactive({
   id: null,
   nome: '',
-  carga_horaria: null,
+  carga_horaria: '',
   descricao: '',
   professor_nome: ''
 })
 
+const opcoesProfessor = computed(() =>
+  professorStore.lista.map(p => ({
+    label: p.nome,
+    value: p.nome
+  }))
+)
+
 const limparDisciplinaEmEdicao = () => {
   disciplinaEmEdicao.id = null
   disciplinaEmEdicao.nome = ''
-  disciplinaEmEdicao.carga_horaria = null
+  disciplinaEmEdicao.carga_horaria = ''
   disciplinaEmEdicao.descricao = ''
   disciplinaEmEdicao.professor_nome = ''
 }
 
-const carregarDisciplinas = async () => {
-  await disciplinaStore.carregarTodas()
+const carregarDados = async () => {
+  await Promise.all([
+    disciplinaStore.carregarTodas(),
+    professorStore.carregarTodos()
+  ])
 }
 
 const novaDisciplina = () => {
@@ -176,8 +238,7 @@ const editarDisciplina = (disciplina) => {
   disciplinaEmEdicao.nome = disciplina.nome
   disciplinaEmEdicao.carga_horaria = disciplina.carga_horaria
   disciplinaEmEdicao.descricao = disciplina.descricao
-  disciplinaEmEdicao.professor_nome = disciplina.professor_nome
-
+  disciplinaEmEdicao.professor_nome = disciplina.professor_nome || ''
   dialogoVisivel.value = true
 }
 
@@ -187,16 +248,17 @@ const salvarDisciplina = async () => {
       nome: disciplinaEmEdicao.nome,
       carga_horaria: disciplinaEmEdicao.carga_horaria,
       descricao: disciplinaEmEdicao.descricao,
-      professor_nome: disciplinaEmEdicao.professor_nome
+      professor_nome: disciplinaEmEdicao.professor_nome || ''
     }
 
-    if (modoEdicao.value) {
+    if (modoEdicao.value && disciplinaEmEdicao.id != null) {
       await disciplinaStore.atualizarDisciplina(disciplinaEmEdicao.id, payload)
     } else {
       await disciplinaStore.criarDisciplina(payload)
     }
 
     dialogoVisivel.value = false
+    await disciplinaStore.carregarTodas()
   } catch (erro) {
     console.error(erro)
   }
@@ -211,6 +273,6 @@ const removerDisciplina = async (id) => {
 }
 
 onMounted(() => {
-  carregarDisciplinas()
+  carregarDados()
 })
 </script>

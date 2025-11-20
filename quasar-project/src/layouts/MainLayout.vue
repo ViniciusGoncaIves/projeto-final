@@ -1,7 +1,9 @@
+<!-- src/layouts/MainLayout.vue -->
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-header text-white shadow-2">
       <q-toolbar>
+
         <q-btn
           flat
           dense
@@ -11,15 +13,23 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title class="logo-title">
+          Sistema de Ensino
+        </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      class="layout-drawer text-white"
+    >
+      <q-list class="text-white">
+        <q-item-label header class="drawer-header">
+          Menu
+        </q-item-label>
 
         <EssentialLink
           v-for="link in linksList"
@@ -29,45 +39,48 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-dark text-white">
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import EssentialLink from 'components/EssentialLink.vue'
+
+const $q = useQuasar()
 
 const linksList = [
   {
     titulo: 'Início',
-    to: '/app',
+    to: '/dashboard',
     icone: 'home'
   },
   {
     titulo: 'Alunos',
-    to: '/app/alunos',
+    to: '/dashboard/alunos',
     icone: 'school'
   },
   {
     titulo: 'Professores',
-    to: '/app/professores',
+    to: '/dashboard/professores',
     icone: 'person'
   },
   {
     titulo: 'Disciplinas',
-    to: '/app/disciplinas',
+    to: '/dashboard/disciplinas',
     icone: 'menu_book'
   },
   {
     titulo: 'Turmas',
-    to: '/app/turmas',
+    to: '/dashboard/turmas',
     icone: 'groups'
   },
   {
     titulo: 'Notas',
-    to: '/app/notas',
+    to: '/dashboard/notas',
     icone: 'grading'
   },
   {
@@ -82,4 +95,29 @@ const leftDrawerOpen = ref(false)
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+onMounted(() => {
+  $q.dark.set(true)
+})
 </script>
+
+<style scoped>
+.bg-header {
+  background: linear-gradient(90deg, #3b2a63, #7c4dff);
+}
+
+.layout-drawer {
+  background: #2c2145;
+}
+
+.logo-title {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.drawer-header {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+</style>

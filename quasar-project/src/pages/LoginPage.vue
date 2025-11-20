@@ -88,7 +88,7 @@ const fazerLogin = async () => {
     const senhaValida = '123'
 
     if (email.value === emailValido && senha.value === senhaValida) {
-      await router.push('/app')
+      await router.push('/dashboard')
     } else {
       erroLogin.value = 'E-mail ou senha inválidos.'
     }

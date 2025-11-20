@@ -5,12 +5,12 @@ const routes = [
   },
 
   {
-    path: '/app',
+    path: '/dashboard',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('pages/IndexPage.vue')
+        component: () => import('pages/DashboardPage.vue')
       },
       {
         path: 'alunos',

@@ -1,6 +1,6 @@
+<!-- src/pages/CadastroAlunoPage.vue -->
 <template>
   <q-page class="q-pa-md">
-
     <q-card flat bordered class="q-pa-md">
       <div class="text-h6 q-mb-md">
         Cadastro de Alunos
@@ -22,8 +22,8 @@
           label="Recarregar"
           icon="refresh"
           color="primary"
-          @click="carregarAlunos"
-          :loading="alunoStore.carregando"
+          @click="carregarDados"
+          :loading="alunoStore.carregando || turmaStore.carregando"
         />
 
         <q-btn
@@ -68,7 +68,7 @@
       </q-table>
     </q-card>
 
-    <q-dialog v-model="dialogoEdicaoVisivel" persistent>
+    <q-dialog v-model="dialogoVisivel" persistent>
       <q-card style="min-width: 500px">
         <q-card-section class="text-h6">
           {{ modoEdicao ? 'Editar aluno' : 'Novo aluno' }}
@@ -89,10 +89,10 @@
           />
           <q-input
             v-model="alunoEmEdicao.data_nascimento"
-            label="Data de Nascimento"
+            label="Data de nascimento"
             dense
             outlined
-            hint="Formato: AAAA-MM-DD"
+            hint="Formato livre (ex: 2007-02-15 ou 20/07/2001)"
           />
           <q-input
             v-model="alunoEmEdicao.email"
@@ -105,6 +105,18 @@
             label="Telefone"
             dense
             outlined
+          />
+
+          <q-select
+            v-model="turmaSelecionadaId"
+            :options="opcoesTurma"
+            label="Turma"
+            dense
+            outlined
+            emit-value
+            map-options
+            clearable
+            hint="Selecione a turma do aluno"
           />
         </q-card-section>
 
@@ -119,34 +131,34 @@
             flat
             label="Salvar"
             color="primary"
-            :loading="alunoStore.carregando"
+            :loading="alunoStore.carregando || turmaStore.carregando"
             @click="salvarAluno"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
-
   </q-page>
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, computed } from 'vue'
 import { useAlunoStore } from 'src/stores/aluno-store'
+import { useTurmaStore } from 'src/stores/turma-store'
 
 const alunoStore = useAlunoStore()
+const turmaStore = useTurmaStore()
 
 const colunas = [
   { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
   { name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
   { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left' },
-  { name: 'data_nascimento', label: 'Data de Nascimento', field: 'data_nascimento', align: 'left' },
   { name: 'email', label: 'E-mail', field: 'email', align: 'left' },
   { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left' },
   { name: 'acoes', label: 'Ações', field: 'acoes', align: 'center' }
 ]
 
-const dialogoEdicaoVisivel = ref(false)
-const modoEdicao = ref(false) 
+const dialogoVisivel = ref(false)
+const modoEdicao = ref(false)
 
 const alunoEmEdicao = reactive({
   id: null,
@@ -157,6 +169,17 @@ const alunoEmEdicao = reactive({
   telefone: ''
 })
 
+// turma selecionada no form (id da turma)
+const turmaSelecionadaId = ref(null)
+
+// opções de turma para o combo
+const opcoesTurma = computed(() =>
+  turmaStore.lista.map(t => ({
+    label: t.nome,
+    value: t.id
+  }))
+)
+
 const limparAlunoEmEdicao = () => {
   alunoEmEdicao.id = null
   alunoEmEdicao.nome = ''
@@ -164,16 +187,20 @@ const limparAlunoEmEdicao = () => {
   alunoEmEdicao.data_nascimento = ''
   alunoEmEdicao.email = ''
   alunoEmEdicao.telefone = ''
+  turmaSelecionadaId.value = null
 }
 
-const carregarAlunos = async () => {
-  await alunoStore.carregarTodos()
+const carregarDados = async () => {
+  await Promise.all([
+    alunoStore.carregarTodos(),
+    turmaStore.carregarTodas()
+  ])
 }
 
 const novoAluno = () => {
   modoEdicao.value = false
   limparAlunoEmEdicao()
-  dialogoEdicaoVisivel.value = true
+  dialogoVisivel.value = true
 }
 
 const editarAluno = (aluno) => {
@@ -185,7 +212,9 @@ const editarAluno = (aluno) => {
   alunoEmEdicao.email = aluno.email
   alunoEmEdicao.telefone = aluno.telefone
 
-  dialogoEdicaoVisivel.value = true
+  turmaSelecionadaId.value = null
+
+  dialogoVisivel.value = true
 }
 
 const salvarAluno = async () => {
@@ -198,13 +227,38 @@ const salvarAluno = async () => {
       telefone: alunoEmEdicao.telefone
     }
 
-    if (modoEdicao.value) {
-      await alunoStore.atualizarAluno(alunoEmEdicao.id, payload)
+    let alunoSalvo
+
+    if (modoEdicao.value && alunoEmEdicao.id != null) {
+      alunoSalvo = await alunoStore.atualizarAluno(alunoEmEdicao.id, payload)
     } else {
-      await alunoStore.criarAluno(payload)
+      alunoSalvo = await alunoStore.criarAluno(payload)
     }
 
-    dialogoEdicaoVisivel.value = false
+    // se tiver turma selecionada, vincula o aluno à turma
+    if (turmaSelecionadaId.value) {
+      const turma = turmaStore.lista.find(t => t.id === turmaSelecionadaId.value)
+      if (turma) {
+        // normaliza IDs pra string pra não dar pau em includes
+        const alunosIds = Array.isArray(turma.alunos_ids)
+          ? turma.alunos_ids.map(id => String(id))
+          : []
+
+        const idAlunoStr = String(alunoSalvo.id)
+
+        if (!alunosIds.includes(idAlunoStr)) {
+          alunosIds.push(idAlunoStr)
+        }
+
+        await turmaStore.atualizarTurma(turma.id, {
+          nome: turma.nome,
+          alunos_ids: alunosIds
+        })
+      }
+    }
+
+    dialogoVisivel.value = false
+    await carregarDados()
   } catch (erro) {
     console.error(erro)
   }
@@ -219,6 +273,6 @@ const removerAluno = async (id) => {
 }
 
 onMounted(() => {
-  carregarAlunos()
+  carregarDados()
 })
 </script>

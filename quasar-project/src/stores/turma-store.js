@@ -1,10 +1,9 @@
-// src/stores/turma-store.js
 import { defineStore } from 'pinia'
 import { TurmaService } from 'src/services/turmas'
 
 export const useTurmaStore = defineStore('turma', {
   state: () => ({
-    lista: [],        // [{ id, nome, alunos_ids: number[] }]
+    lista: [],       
     carregando: false,
     erro: null
   }),
@@ -28,8 +27,7 @@ export const useTurmaStore = defineStore('turma', {
         this.carregando = true
         this.erro = null
 
-        // payload esperado:
-        // { nome: string, alunos_ids: number[] }
+
         const novaTurma = await TurmaService.criar(payload)
         this.lista.push(novaTurma)
         return novaTurma
@@ -47,8 +45,6 @@ export const useTurmaStore = defineStore('turma', {
         this.carregando = true
         this.erro = null
 
-        // payload esperado:
-        // { nome: string, alunos_ids: number[] }
         const turmaAtualizada = await TurmaService.atualizar(id, payload)
         const indice = this.lista.findIndex(t => t.id === id)
         if (indice !== -1) {

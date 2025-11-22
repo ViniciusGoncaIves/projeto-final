@@ -97,9 +97,6 @@
             outlined
             emit-value
             map-options
-            use-input
-            fill-input
-            input-debounce="0"
             :loading="alunoStore.carregando"
             hint="Selecione um aluno já cadastrado"
             clearable
@@ -121,9 +118,6 @@
             outlined
             emit-value
             map-options
-            use-input
-            fill-input
-            input-debounce="0"
             :loading="disciplinaStore.carregando"
             hint="Selecione uma disciplina já cadastrada"
             clearable
@@ -230,14 +224,14 @@ const notaEmEdicao = reactive({
 const opcoesAlunos = computed(() =>
   alunoStore.lista.map(a => ({
     label: a.nome,
-    value: a.id
+    value: String(a.id)
   }))
 )
 
 const opcoesDisciplinas = computed(() =>
   disciplinaStore.lista.map(d => ({
     label: d.nome,
-    value: d.id
+    value: String(d.id)
   }))
 )
 
@@ -276,8 +270,8 @@ const novaNota = () => {
 const editarNota = (nota) => {
   modoEdicao.value = true
   notaEmEdicao.id = nota.id
-  notaEmEdicao.aluno_nome = nota.aluno_nome
-  notaEmEdicao.disciplina_nome = nota.disciplina_nome
+  notaEmEdicao.aluno_nome = String(nota.aluno_nome)
+  notaEmEdicao.disciplina_nome = String(nota.disciplina_nome)
   notaEmEdicao.nota = nota.nota
   notaEmEdicao.data_avaliacao = nota.data_avaliacao
   dialogoVisivel.value = true

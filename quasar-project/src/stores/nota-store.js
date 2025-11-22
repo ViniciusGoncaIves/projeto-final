@@ -4,7 +4,7 @@ import { NotaService } from 'src/services/notas'
 
 export const useNotaStore = defineStore('nota', {
   state: () => ({
-    lista: [],        // lista de notas
+    lista: [],       
     carregando: false,
     erro: null
   }),
@@ -28,13 +28,6 @@ export const useNotaStore = defineStore('nota', {
         this.carregando = true
         this.erro = null
 
-        // payload esperado:
-        // {
-        //   aluno_nome: string,
-        //   disciplina_nome: string,
-        //   nota: number,
-        //   data_avaliacao: string (ex: "2024-03-10")
-        // }
         const novaNota = await NotaService.criar(payload)
         this.lista.push(novaNota)
         return novaNota

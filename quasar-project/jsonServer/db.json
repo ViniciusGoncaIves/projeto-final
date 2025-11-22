@@ -55,6 +55,22 @@
       "data_nascimento": "12/08/1983",
       "email": "",
       "telefone": "(56) 4 6456-4565"
+    },
+    {
+      "id": "b8a1",
+      "nome": "Alencar",
+      "cpf": "455.475.445-45",
+      "data_nascimento": "03/11/2025",
+      "email": "",
+      "telefone": "(44) 5 5454-5458"
+    },
+    {
+      "id": "b7f0",
+      "nome": "Zenébrio Ostilio",
+      "cpf": "458.754.878-54",
+      "data_nascimento": "22/11/2025",
+      "email": "naotem@gmail.com",
+      "telefone": "(87) 4 5178-5445"
     }
   ],
   "professores": [
@@ -139,7 +155,8 @@
         "2",
         "4f5b",
         "8440",
-        "8356"
+        "8356",
+        "b7f0"
       ],
       "id": "1"
     },
@@ -169,11 +186,12 @@
       "alunos_ids": [
         "32e2",
         "8356",
-        "4f5b",
         "8440",
         "2",
         "1",
-        "94dc"
+        "94dc",
+        "4f5b",
+        "b8a1"
       ],
       "id": "1606"
     }
@@ -255,6 +273,20 @@
       "disciplina_nome": "265e",
       "nota": 5.5,
       "data_avaliacao": "2025-11-07"
+    },
+    {
+      "aluno_nome": "b8a1",
+      "disciplina_nome": "265e",
+      "nota": 7.75,
+      "data_avaliacao": "2025-11-13",
+      "id": "7824"
+    },
+    {
+      "id": "5d5a",
+      "aluno_nome": "b7f0",
+      "disciplina_nome": "5bcf",
+      "nota": 9.54,
+      "data_avaliacao": "2025-11-20"
     }
   ]
 }

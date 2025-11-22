@@ -85,7 +85,7 @@
                   {{ maiorNota }}
                 </div>
                 <div class="text-caption text-grey-6 q-mt-xs">
-                  Melhor desempenho entre as avaliações.
+                  Maior nota entre as avaliações.
                 </div>
               </div>
 
@@ -95,7 +95,7 @@
                   {{ menorNota }}
                 </div>
                 <div class="text-caption text-grey-6 q-mt-xs">
-                  Ajuda a identificar alunos em risco.
+                  Menor nota entre as avaliações.
                 </div>
               </div>
 

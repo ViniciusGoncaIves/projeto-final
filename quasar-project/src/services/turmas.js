@@ -12,7 +12,6 @@ export const TurmaService = {
   },
 
   async criar (payload) {
-    // JSON Server gera id se você não mandar; no seu caso você pode mandar string também
     const { data } = await api.post('/turmas', payload)
     return data
   },

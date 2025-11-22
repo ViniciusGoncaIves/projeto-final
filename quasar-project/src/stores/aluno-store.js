@@ -1,4 +1,3 @@
-// src/stores/aluno-store.js
 import { defineStore } from 'pinia'
 import { AlunoService } from 'src/services/alunos'
 
